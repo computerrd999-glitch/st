@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RD Coaching Center - Student Payment Management</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+  
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- === 1. LOGIN SCREEN === -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-logo">
+      <div class="logo-text">RD</div>
+    </div>
+    <h1 class="login-title">RD Coaching Center</h1>
+    <p class="login-subtitle">Student Payment Management</p>
+    
+    <div class="login-form">
+      <div class="form-group">
+        <input type="text" id="loginName" placeholder="Owner Name" class="form-input">
+      </div>
+      <div class="form-group password-group">
+        <input type="password" id="loginPassword" placeholder="Password" class="form-input">
+        <button type="button" class="password-toggle"><i class="fas fa-eye"></i></button>
+      </div>
+      <button id="loginBtn" class="btn btn-primary full-width">Login</button>
+    </div>
+    
+    <div class="login-footer">
+      Powered by RD Coaching Center
+    </div>
+  </div>
+
+  <!-- === 2. MAIN APP CONTAINER === -->
+  <div id="mainApp" class="main-app hidden">
+
+    <!-- === 2a. HEADER === -->
+    <header class="app-header">
+      <div class="header-brand">
+        <h1 id="appName">RD Coaching Center</h1>
+        <p id="ownerDisplay">Rudra Debnath</p>
+      </div>
+      <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+    </header>
+
+    <!-- === 2b. PAGE CONTAINER === -->
+    <div id="pageContainer">
+
+      <!-- --- DASHBOARD PAGE --- -->
+      <div id="dashboardPage" class="page active">
+        
+        <!-- Ring Clock -->
+        <div class="clock-container">
+          <div class="clock-ring">
+            <svg class="clock-svg" viewBox="0 0 200 200">
+              <circle class="clock-bg-ring" cx="100" cy="100" r="90" />
+              <circle id="clockProgress" class="clock-progress-ring" cx="100" cy="100" r="90" />
+            </svg>
+            <div class="clock-inner">
+              <div id="clockTime" class="clock-time">00:00:00 AM</div>
+              <div id="clockDate" class="clock-date">01 January 2026</div>
+              <div id="clockDay" class="clock-day">Monday</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Summary Cards -->
+        <div class="summary-cards">
+          <div class="summary-card">
+            <div class="summary-icon"><i class="fas fa-users"></i></div>
+            <div class="summary-info">
+              <span class="summary-label">Total Students</span>
+              <span id="totalStudents" class="summary-value">0</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-icon collected"><i class="fas fa-indian-rupee-sign"></i></div>
+            <div class="summary-info">
+              <span class="summary-label">This Month Collection</span>
+              <span id="monthCollection" class="summary-value">₹0</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-icon pending"><i class="fas fa-clock"></i></div>
+            <div class="summary-info">
+              <span class="summary-label">This Month Pending</span>
+              <span id="monthPending" class="summary-value">₹0</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-icon success"><i class="fas fa-check-circle"></i></div>
+            <div class="summary-info">
+              <span class="summary-label">Total Paid</span>
+              <span id="totalPaid" class="summary-value">₹0</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="summary-info">
+              <span class="summary-label">Total Pending</span>
+              <span id="totalPending" class="summary-value">₹0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Month Grid -->
+        <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Monthly Overview</h2>
+        <div class="months-grid" id="monthsGrid">
+          <!-- 12 month cards rendered by JS -->
+        </div>
+      </div>
+
+      <!-- --- MONTH DASHBOARD PAGE --- -->
+      <div id="monthDashboard" class="page hidden">
+        <div class="page-header">
+          <button id="monthBackBtn" class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+          <h2 id="monthTitle" class="page-title">January</h2>
+        </div>
+
+        <!-- Monthly Summary -->
+        <div class="monthly-summary" id="monthlySummary">
+          <div class="mini-card"><span class="mini-label">Total</span><span id="mTotal" class="mini-value">0</span></div>
+          <div class="mini-card paid"><span class="mini-label">Paid</span><span id="mPaid" class="mini-value">0</span></div>
+          <div class="mini-card pending"><span class="mini-label">Pending</span><span id="mPending" class="mini-value">0</span></div>
+          <div class="mini-card partial"><span class="mini-label">Partial</span><span id="mPartial" class="mini-value">0</span></div>
+          <div class="mini-card"><span class="mini-label">Collected</span><span id="mCollected" class="mini-value">₹0</span></div>
+          <div class="mini-card"><span class="mini-label">Pending Amt</span><span id="mPendingAmt" class="mini-value">₹0</span></div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="controls-bar">
+          <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="monthSearch" class="search-input" placeholder="Search students...">
+          </div>
+          <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="paid">Paid</button>
+            <button class="filter-btn" data-filter="pending">Pending</button>
+            <button class="filter-btn" data-filter="partial">Partial</button>
+          </div>
+          <div class="sort-container">
+            <select id="sortSelect" class="sort-select">
+              <option value="name-asc">Name A-Z</option>
+              <option value="name-desc">Name Z-A</option>
+              <option value="pending-high">Highest Pending</option>
+              <option value="pending-low">Lowest Pending</option>
+              <option value="recent">Recently Paid</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Student Cards Container -->
+        <div id="studentCards" class="student-cards-grid">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Add Student FAB -->
+        <button id="addStudentBtn" class="add-student-btn">
+          <i class="fas fa-plus"></i> Add Student
+        </button>
+      </div>
+
+      <!-- --- STUDENT PROFILE PAGE --- -->
+      <div id="studentProfile" class="page hidden">
+        <div class="page-header">
+          <button id="profileBackBtn" class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+          <h2 class="page-title">Student Profile</h2>
+        </div>
+        <div class="profile-header-card" id="profileHeader">
+          <div class="profile-avatar" id="profileAvatar">A</div>
+          <h2 id="profileName">Student Name</h2>
+          <p id="profilePhone"><i class="fas fa-phone"></i> 0000000000</p>
+          <p id="profileClass"><i class="fas fa-graduation-cap"></i> Class 10</p>
+          <p id="profileFee"><i class="fas fa-indian-rupee-sign"></i> ₹800/month</p>
+        </div>
+
+        <!-- Payment History -->
+        <h3 class="section-title"><i class="fas fa-history"></i> Payment History</h3>
+        <div id="paymentHistory" class="payment-history">
+          <!-- 12 month cards rendered by JS -->
+        </div>
+
+        <!-- Annual Summary -->
+        <div class="annual-summary" id="annualSummary">
+          <div class="summary-row"><span>Total Annual Fees</span><span id="annualFees">₹0</span></div>
+          <div class="summary-row"><span>Total Paid</span><span id="annualPaid">₹0</span></div>
+          <div class="summary-row"><span>Total Pending</span><span id="annualPending">₹0</span></div>
+        </div>
+
+        <!-- Profile Actions -->
+        <div class="profile-actions">
+          <button id="editProfileBtn" class="btn btn-primary"><i class="fas fa-edit"></i> Edit Profile</button>
+          <button id="deleteProfileBtn" class="btn btn-danger"><i class="fas fa-trash"></i> Delete Completely</button>
+        </div>
+      </div>
+
+      <!-- --- SEARCH/STUDENTS PAGE --- -->
+      <div id="searchPage" class="page hidden">
+        <div class="page-header">
+          <h2 class="page-title"><i class="fas fa-search"></i> Search Students</h2>
+        </div>
+        <div class="search-container large">
+          <i class="fas fa-search"></i>
+          <input type="text" id="globalSearch" class="search-input" placeholder="Search by student name...">
+        </div>
+        <div id="searchResults" class="search-results">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- --- PENDING FEES PAGE --- -->
+      <div id="pendingPage" class="page hidden">
+        <div class="page-header">
+          <h2 class="page-title"><i class="fas fa-exclamation-circle"></i> Pending Fees</h2>
+        </div>
+        <div class="search-container">
+          <i class="fas fa-search"></i>
+          <input type="text" id="pendingSearch" class="search-input" placeholder="Search pending students...">
+        </div>
+        <div class="pending-summary" id="pendingSummaryCards">
+          <div class="mini-card danger"><span class="mini-label">Pending Students</span><span id="pendingCount" class="mini-value">0</span></div>
+          <div class="mini-card"><span class="mini-label">Total Pending</span><span id="pendingTotal" class="mini-value">₹0</span></div>
+        </div>
+        <div id="pendingList" class="pending-list">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- --- SETTINGS PAGE --- -->
+      <div id="settingsPage" class="page hidden">
+        <div class="page-header">
+          <h2 class="page-title"><i class="fas fa-cog"></i> Settings</h2>
+        </div>
+        
+        <div class="settings-card">
+          <h3><i class="fas fa-building"></i> Center Details</h3>
+          <div class="form-group">
+            <label>Coaching Center Name</label>
+            <input type="text" id="settingName" class="form-input" value="RD Coaching Center">
+          </div>
+          <div class="form-group">
+            <label>Owner Name</label>
+            <input type="text" id="settingOwner" class="form-input" value="Rudra Debnath">
+          </div>
+          <div class="form-group">
+            <label>Default Monthly Fee (₹)</label>
+            <input type="number" id="settingFee" class="form-input" value="800">
+          </div>
+          <div class="form-group">
+            <label>Default Student Class</label>
+            <input type="text" id="settingClass" class="form-input" value="Class 10">
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <h3><i class="fas fa-lock"></i> Change Password</h3>
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password">
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="newPassword" class="form-input" placeholder="Enter new password">
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm new password">
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <h3><i class="fas fa-database"></i> Backup & Export</h3>
+          <div class="export-section">
+            <button id="exportCSV" class="btn btn-outline"><i class="fas fa-file-csv"></i> Export CSV</button>
+            <button id="exportExcel" class="btn btn-outline"><i class="fas fa-file-excel"></i> Export Excel</button>
+            <button id="exportPDF" class="btn btn-outline"><i class="fas fa-file-pdf"></i> PDF Report</button>
+            <button id="backupData" class="btn btn-primary"><i class="fas fa-download"></i> Backup Data</button>
+            <button id="restoreData" class="btn btn-warning"><i class="fas fa-upload"></i> Restore Data</button>
+            <input type="file" id="restoreFile" accept=".json" class="hidden">
+          </div>
+        </div>
+
+        <button id="saveSettings" class="btn btn-primary full-width"><i class="fas fa-save"></i> Save Settings</button>
+      </div>
+
+    </div> <!-- end pageContainer -->
+
+    <!-- === 2c. BOTTOM NAVIGATION === -->
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-item active" data-page="dashboard">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-page="months">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Months</span>
+      </button>
+      <button class="nav-item" data-page="search">
+        <i class="fas fa-users"></i>
+        <span>Students</span>
+      </button>
+      <button class="nav-item" data-page="pending">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Pending</span>
+        <span id="pendingBadge" class="nav-badge hidden">0</span>
+      </button>
+      <button class="nav-item" data-page="settings">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+  </div> <!-- end mainApp -->
+
+  <!-- === 3. MODALS === -->
+
+  <!-- Add/Edit Student Modal -->
+  <div id="studentModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add Student</h3>
+        <button id="modalClose" class="modal-close"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="studentForm" class="modal-form">
+        <div class="form-group">
+          <label><i class="fas fa-user"></i> Student Name</label>
+          <input type="text" id="formName" class="form-input" placeholder="Enter student name" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-phone"></i> Phone Number</label>
+          <input type="tel" id="formPhone" class="form-input" placeholder="Enter phone number (optional)">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-graduation-cap"></i> Class</label>
+          <input type="text" id="formClass" class="form-input" placeholder="Enter class">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-indian-rupee-sign"></i> Monthly Fee</label>
+          <input type="number" id="formFee" class="form-input" placeholder="Enter monthly fee" required min="0">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-money-bill"></i> Paid Amount</label>
+          <input type="number" id="formPaid" class="form-input" placeholder="Enter paid amount" required min="0" value="0">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-calendar"></i> Payment Date</label>
+          <input type="date" id="formDate" class="form-input">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-sticky-note"></i> Note (Optional)</label>
+          <textarea id="formNote" class="form-input form-textarea" placeholder="Add a note..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="formCancel" class="btn btn-outline">Cancel</button>
+          <button type="submit" id="formSubmit" class="btn btn-primary">Add Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Confirmation Dialog -->
+  <div id="confirmDialog" class="modal-overlay hidden">
+    <div class="modal confirm-modal">
+      <div class="confirm-icon"><i class="fas fa-exclamation-triangle"></i></div>
+      <p id="confirmMessage">Are you sure?</p>
+      <div class="confirm-actions">
+        <button id="confirmCancel" class="btn btn-outline">Cancel</button>
+        <button id="confirmDelete" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- JS Scripts -->
+  <script src="script.js" defer></script>
+</body>
+</html>
